@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class UsersController < ApplicationController
 
   # GET /users/1
@@ -22,6 +23,7 @@ class UsersController < ApplicationController
   def add
     cookies[:provider] = params[:provider]
     cookies[:user] = current_social_user.user.id
+    redirect_to destroy_social_user_session_path
   end
 
 end

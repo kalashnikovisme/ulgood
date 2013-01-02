@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class SocialUser < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable,
@@ -21,7 +22,7 @@ class SocialUser < ActiveRecord::Base
       if current_cookies[:user].nil? || current_cookies[:user].blank?
         new_user = User.create!(:name => access_token.info.name)
       else
-        if current_cookies[:provider] == access_token.provider
+        if current_cookies[:provider].to_s == access_token.provider.to_s
           new_user = current_cookies[:user]
         end
       end

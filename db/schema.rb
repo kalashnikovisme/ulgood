@@ -16,6 +16,7 @@ ActiveRecord::Schema.define(:version => 20121115062718) do
   create_table "messages", :force => true do |t|
     t.string   "message"
     t.integer  "social_user_id"
+    t.integer  "checked"
     t.datetime "created_at",     :null => false
     t.datetime "updated_at",     :null => false
   end

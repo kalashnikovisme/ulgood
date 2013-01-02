@@ -5,13 +5,18 @@ module MainHelper
     posts = ""
 
     if messages_class == "all"
-      messages = Message.all
+      messages = Message.where "checked!=0"
     else
       messages = Message.where :created_at => Time.now.midnight..Time.now+60*60*4
+      messages = messages.where ("checked!=0")
     end
 
     if messages.count == 0
-      posts = "Стань сегодня первым!"
+      if messages_class != "all"
+        posts = "Стань сегодня первым!"
+      else
+        posts = "Добрых дел ещё нет. Расскажи о своём!"
+      end
     else
       messages.each do |m|
         #TODO: Code repeat!
