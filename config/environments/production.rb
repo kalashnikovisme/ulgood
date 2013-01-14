@@ -1,5 +1,5 @@
 # -*- encoding : utf-8 -*-
-UlgoodRv5::Application.configure do
+Ulgood::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
 
   # Code is not reloaded between requests

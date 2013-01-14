@@ -1,30 +1,37 @@
 # -*- encoding : utf-8 -*-
 module AdminHelper
 
-  def new_posts
+  def unchecked_posts
     posts = ""
-    messages = Message.where :checked => 0
-
-
+    temp_date = 0
+    messages = Message.where :checked => nil
     if messages.count == 0
-      posts = "Новых добрых дел нет!"
+      "Неподтверждённых постов нет"
     else
       messages.each do |m|
+        if (m.created_at.day != temp_date)
+          temp_date = m.created_at.day
+          posts += %{
+<div class = "date">
+#{m.created_at.day}.#{m.created_at.month}
+</div>
+}
+        end
         #TODO: Code repeat!
         posts += %{
 					<div class = "today_list_item" #{'onclick = "show_full(this);" style="cursor:pointer;"' if m.message.length > 50 } onmouseover = "showSocialButtons(this);" onmouseout = "hideSocialButtons(this)">
-						<a class = "user_name" href = 'users/#{m.social_user.user_id}'>
-              #{m.social_user.user.name}
+          <div class = "admin_choose">
+            #{link_to(image_tag("add.png"), "/admin/allow/#{m.id}")}
+            #{link_to(image_tag("reject.gif"), "/admin/delete/#{m.id}") }
+          </div>
+					<div class="post_text">	<a class = "user_name" href = 'users/#{m.social_account.user_id}'>
+              #{m.social_account.user.name}
 						</a>
-						#{m.message}
-            <span class = "">
-              #{link_to "Принять", :controller => "admin", :action => "allow", :id => m.id if current_social_user.user.admin? }
-              #{link_to "Удалить", :controller => "message", :action => "delete", :id => m.id if current_social_user.user.admin? }
-            </span>
+						  #{m.message}
+          </div>
 				}
-
         posts += %{
-					</div>
+          <div style="clear: both;"></div>
 				}
       end
     end
