@@ -6,7 +6,7 @@ module UsersHelper
     if gray.blank?
       link_to(social_image, url)
     else
-      link_to(social_image, "/login?provider=#{provider}&user=#{current_social_account.user.id}")
+      link_to(social_image, "/login?provider=#{provider}&user=#{current_social_account.user.id}&back=#{url_for}")
     end
   end
 
@@ -54,7 +54,7 @@ module UsersHelper
     if messages.empty?
       messages_post += "<br>У пользователя ещё нет добрых дел."
     else
-      messages = messages.sort_by {|m| m.created_at}.reverse
+          messages = messages.sort_by {|m| m.created_at}.reverse
       messages.each do |m|
         if (m.created_at.day != temp_date)
           temp_date = m.created_at.day

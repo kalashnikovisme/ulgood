@@ -1,13 +1,16 @@
-=render "layouts/header"
-
-#main
-  #user_info
-    #ava
-      <img src="#{ @user.avatar }">
-    #social_panel
-      =raw social_panel
+#user_info
+  #ava
+    =image_tag @user.avatar, :id => "ava_img"
+  #user
     #name_line
       = @user.name
-  #posts
-    =raw user_messages
+    #social_panel
+      =raw social_panel
+#posts
+  =raw user_messages
+%script
+  window.onload = function(){  
+  $(posts).offset(function(i,val){
+  return {top:$(ava_img).height()+$(ava_img).offset().top, left:val.left};
+  });};
 <br>
