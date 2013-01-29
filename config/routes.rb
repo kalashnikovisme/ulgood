@@ -1,20 +1,26 @@
-UlgoodRv5::Application.routes.draw do
+# -*- encoding : utf-8 -*-
+Ulgood::Application.routes.draw do
 
-  devise_for :social_users, :controllers => { :omniauth_callbacks => "social_users/omniauth_callbacks" }
-  resources :social_users, :only => [:destroy]
+  get "admin/users"
+
+  get "admin/issues"
+
+  resources :messages
+
+  devise_for :social_accounts, :controllers => { :omniauth_callbacks => "social_accounts/omniauth_callbacks" }
+
+  resources :social_accounts, :only => [ :destroy ]
 
   root :to => "main#home"
 
-  match 'social_users/sign_in' => redirect('/')
-  match "login" => "social_users#login"
-  match "create" => "message#create", :method => [:post, :get]
-  match "thanks" => "message#thanks"
-  match "messages/delete" => "message#delete"
-  match "users/delete" => "users#delete"
-  match "users/add" => "users#add"
-
-  resources :users, :only => [:show]
-
-  match '*path' => redirect('/')
+  match "create" => "messages#create", :method => [:post, :get]
+  match "login" => "social_accounts#login"
+  match "about" => "main#about"
+  match "issues" => "admin#issues"
+  match "users" => "admin#users"
+  match "/admin/delete/:id" => "messages#destroy", :method => :delete
+  match "/admin/allow/:id" => "messages#check"
+  match "login_redirect" => "main#login_redirect"
+  resources :users
 
 end
